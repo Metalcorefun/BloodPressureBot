@@ -4,6 +4,7 @@ from pydantic_core import ValidationError
 
 from data_access_layer.repositories.user_repository import UserRepository
 from data_access_layer.repositories.measure_repository import MeasureRepository
+from keyboards.reply_kbs import cancel_kb
 from handlers.app_states import AppStates
 from models.measure import MeasureDTO
 
@@ -19,7 +20,7 @@ async def add_new_measure(measure, user_id):
 @measure_router.message(F.text.contains('Добавить измерение'))
 async def activate_new_measure(message: types.Message, state: FSMContext):
     await state.set_state(AppStates.adds_new_measure)
-    await message.answer(text='Введите данные в формате {SYS}:{DIA}')
+    await message.answer(text='Введите данные в формате {SYS}:{DIA}', reply_markup=cancel_kb())
 
 @measure_router.message(AppStates.adds_new_measure, F.text)
 async def handle_new_measure(message: types.Message, state: FSMContext):

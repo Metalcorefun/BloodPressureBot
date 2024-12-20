@@ -2,8 +2,6 @@ import os
 import re
 import emoji
 
-
-
 def is_valid_filename(filename: str) -> bool:
     if (not filename
             or not os.path.splitext(filename)[1]

@@ -57,6 +57,16 @@ def profile_kb(**kwargs):
         input_field_placeholder="Воспользуйтесь меню:"
     )
 
+def cancel_kb():
+    kb_list = [
+        [KeyboardButton(text='❌ Отмена')]
+    ]
+    return ReplyKeyboardMarkup(
+            keyboard=kb_list,
+            resize_keyboard=True,
+            one_time_keyboard=True
+        )
+
 def get_keyboard_binds():
     keyboard_binds = {
         'Главное меню': main_kb,

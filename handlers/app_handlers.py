@@ -1,9 +1,11 @@
 from aiogram import F, Router, types
 from aiogram.filters.command import Command
 from aiogram.enums.dice_emoji import DiceEmoji
+from aiogram.fsm.context import FSMContext
+from aiogram.types import ReplyKeyboardRemove
 
 from keyboards.reply_kbs import main_kb, get_keyboard_binds, get_keyboard_by_message
-from utils.checkers import sanitize_string, parse_measure
+from utils.checkers import sanitize_string
 
 app_router = Router()
 
@@ -23,6 +25,15 @@ async def show_keyboard(message: types.Message):
 async def show_profile_info(message: types.Message):
     await message.answer(f'Ты {message.from_user.first_name} {message.from_user.last_name}!')
     await message.answer(f'А еще твой id = {message.from_user.id}')
+
+@app_router.message(F.text.contains('Отмена'))
+async def cancel_action(message: types.Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        return
+
+    await state.clear()
+    await message.answer("Ввод информации отменён", reply_markup=ReplyKeyboardRemove())
 
 
 @app_router.message(Command("dice"))
