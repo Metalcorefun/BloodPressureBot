@@ -4,7 +4,7 @@ from aiogram.types import BotCommand, BotCommandScopeDefault
 
 from create_bot import bot, dp
 from data_access_layer.database import initialize_db
-from handlers import all_handlers
+from handlers import app_handlers, user_handlers, measure_handlers
 
 async def set_commands(bot: Bot):
     commands = [BotCommand(command='start', description='Старт'),
@@ -17,7 +17,9 @@ async def initialize_on_startup():
 
 
 async def main():
-    dp.include_router(all_handlers.router)
+    dp.include_router(app_handlers.app_router)
+    dp.include_router(user_handlers.user_router)
+    dp.include_router(measure_handlers.measure_router)
     dp.startup.register(initialize_on_startup)
     #dp.shutdown.register()
 

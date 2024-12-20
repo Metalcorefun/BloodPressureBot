@@ -2,7 +2,7 @@ from models.user import UserEntity, UserDTO
 from data_access_layer.database import get_db_session
 from sqlalchemy import select
 
-class UserDAO:
+class UserRepository:
 
     @staticmethod
     async def create(user: UserDTO):
@@ -29,3 +29,8 @@ class UserDAO:
                 return UserDTO.model_validate(result, from_attributes=True)
             else:
                 return None
+
+    @staticmethod
+    async def is_user_exists(tg_id: int) -> bool:
+        is_exists = False if not await UserRepository.find_by_tg_id(tg_id) else True
+        return is_exists

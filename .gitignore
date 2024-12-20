@@ -169,7 +169,7 @@ atlassian-ide-plugin.xml
 # Cursive Clojure plugin
 .idea/replstate.xml
 
-.idea/
+.idea
 
 # SonarLint plugin
 .idea/sonarlint/
@@ -188,3 +188,5 @@ fabric.properties
 
 # idea folder, uncomment if you don't need it
 # .idea
+/.idea/
+/.idea/inspectionProfiles/

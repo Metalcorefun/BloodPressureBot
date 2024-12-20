@@ -1,10 +1,19 @@
 from collections import namedtuple
 
 
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from utils.config_reader import config
 
 # FUTURE: Rewrite all navigation to callbacks
+
+# В каждом кейборде завести параметр ancestor и занести в коллбэк
+# from aiogram.filters.callback_data import CallbackData
+# class MenuCallbackData(CallbackData, prefix = 'menu_nav'):
+#     action: str = 'back'
+#     navigate_to: str
+# KeyboardMetadata = namedtuple('KeyboardMetadata', ['message_text', 'func'])
+# ..[InlineKeyboardButton(text='Назад', callback_data = MenuCallbackData(navigate_to=ancestor).pack())]
+
 def main_kb(user_telegram_id: int):
     ancestor = '-'
     kb_list = [
@@ -58,18 +67,3 @@ def get_keyboard_binds():
 
 def get_keyboard_by_message(key):
     return get_keyboard_binds().get(key)
-
-
-
-
-
-
-
-
-# В каждом кейборде завести параметр ancestor и занести в коллбэк
-# from aiogram.filters.callback_data import CallbackData
-# class MenuCallbackData(CallbackData, prefix = 'menu_nav'):
-#     action: str = 'back'
-#     navigate_to: str
-# KeyboardMetadata = namedtuple('KeyboardMetadata', ['message_text', 'func'])
-# ..[InlineKeyboardButton(text='Назад', callback_data = MenuCallbackData(navigate_to=ancestor).pack())]

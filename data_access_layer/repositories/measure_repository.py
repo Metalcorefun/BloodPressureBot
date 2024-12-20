@@ -2,7 +2,7 @@ from models.measure import MeasureDTO, MeasureEntity
 from data_access_layer.database import get_db_session
 from sqlalchemy import select
 
-class MeasureDAO:
+class MeasureRepository:
 
     @staticmethod
     async def create(measure: MeasureDTO):
