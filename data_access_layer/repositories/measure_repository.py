@@ -1,6 +1,7 @@
 from models.measure import MeasureDTO, MeasureEntity
 from data_access_layer.database import get_db_session
-from sqlalchemy import select
+from sqlalchemy import select, desc
+
 
 class MeasureRepository:
 
@@ -21,7 +22,7 @@ class MeasureRepository:
 
     @staticmethod
     async def get_by_user_id(user_id: int):
-        query = select(MeasureEntity).where(MeasureEntity.user_id == user_id)
+        query = select(MeasureEntity).where(MeasureEntity.user_id == user_id).order_by(desc(MeasureEntity.measure_dt))
         async with get_db_session() as session:
             results = await session.execute(query)
             # print([measure.__dict__ for measure in results.scalars().all()])

@@ -1,6 +1,3 @@
-from collections import namedtuple
-
-
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from utils.config_reader import config
 
@@ -47,7 +44,7 @@ def profile_kb(**kwargs):
     ancestor = 'main_menu'
     kb_list = [
         [KeyboardButton(text="ℹ️ Общая информация")],
-        [KeyboardButton(text="(TBD) Оповещения (TBD)")],
+        [KeyboardButton(text="(TBD) Оповещения")],
         [KeyboardButton(text='↩️ Главное меню')]
     ]
     return ReplyKeyboardMarkup(
