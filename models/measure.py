@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, field_validator
-from sqlalchemy import Column, Integer, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, DateTime, func
 
 from models.base import Base
 
@@ -36,4 +36,4 @@ class MeasureEntity(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     pressure_sys = Column(Integer, nullable=False)
     pressure_dia = Column(Integer, nullable=False)
-    measure_dt = Column(DateTime, nullable=False)
+    measure_dt = Column(DateTime, default=func.now())

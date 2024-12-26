@@ -33,7 +33,7 @@ def measures_kb(**kwargs):
     ancestor = 'main_menu'
     kb_list = [
         [KeyboardButton(text="➕ Добавить измерение")],
-        [KeyboardButton(text="(TBD) Выгрузить историю")],
+        [KeyboardButton(text="💾 Выгрузить историю")],
         [KeyboardButton(text='↩️ Главное меню')]
     ]
     return ReplyKeyboardMarkup(
