@@ -20,7 +20,7 @@ class UserRepository:
         raise NotImplementedError()
 
     @staticmethod
-    async def find_by_tg_id(tg_id: int):
+    async def find(tg_id: int):
         query = select(UserEntity).where(UserEntity.telegram_id == tg_id)
         async with get_db_session() as session:
             result = await session.execute(query)
@@ -32,5 +32,5 @@ class UserRepository:
 
     @staticmethod
     async def is_user_exists(tg_id: int) -> bool:
-        is_exists = False if not await UserRepository.find_by_tg_id(tg_id) else True
+        is_exists = False if not await UserRepository.find(tg_id) else True
         return is_exists

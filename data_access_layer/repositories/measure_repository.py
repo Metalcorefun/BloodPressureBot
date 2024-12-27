@@ -25,5 +25,4 @@ class MeasureRepository:
         query = select(MeasureEntity).where(MeasureEntity.user_id == user_id).order_by(desc(MeasureEntity.measure_dt))
         async with get_db_session() as session:
             results = await session.execute(query)
-            # print([measure.__dict__ for measure in results.scalars().all()])
             return [MeasureDTO.model_validate(measure, from_attributes=True) for measure in results.scalars().all()]

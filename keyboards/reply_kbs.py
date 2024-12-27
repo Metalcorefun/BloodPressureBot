@@ -44,7 +44,7 @@ def profile_kb(**kwargs):
     ancestor = 'main_menu'
     kb_list = [
         [KeyboardButton(text="ℹ️ Общая информация")],
-        [KeyboardButton(text="(TBD) Оповещения")],
+        [KeyboardButton(text="⏰ Настроить оповещения")],
         [KeyboardButton(text='↩️ Главное меню')]
     ]
     return ReplyKeyboardMarkup(
@@ -52,6 +52,20 @@ def profile_kb(**kwargs):
         resize_keyboard=True,
         one_time_keyboard=True,
         input_field_placeholder="Воспользуйтесь меню:"
+    )
+
+def notifications_kb(**kwargs):
+    ancestor = 'profile'
+    kb_list = [
+        [KeyboardButton(text='➕ Добавить оповещение')],
+        [KeyboardButton(text='(TBD) Просмотр настроек оповещений')],
+        [KeyboardButton(text='(TBD) Убрать оповещение')]
+    ]
+    return ReplyKeyboardMarkup(
+        keyboard=kb_list,
+        resize_keyboard=True,
+        one_time_keyboard=True,
+        input_field_placeholder='Воспользуйтесь меню:'
     )
 
 def cancel_kb():
@@ -68,7 +82,8 @@ def get_keyboard_binds():
     keyboard_binds = {
         'Главное меню': main_kb,
         'Измерения и статистика': measures_kb,
-        'Мой профиль': profile_kb
+        'Мой профиль': profile_kb,
+        'Настроить оповещения': notifications_kb
     }
     return keyboard_binds
 

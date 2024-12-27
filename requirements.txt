@@ -5,3 +5,5 @@ python-dotenv==1.0.1
 emoji==2.14.0
 setuptools==75.6.0
 apscheduler==3.11.0
+pydantic~=2.9.2
+pydantic_core~=2.23.4

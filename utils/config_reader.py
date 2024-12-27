@@ -1,5 +1,5 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import find_dotenv
 from utils.checkers import is_valid_filename
 
@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     admin_id: int
     database_type: str
     database_file: str | None = None
+    job_database_file: str | None = None
 
     model_config = SettingsConfigDict(env_file=find_dotenv('.env'), env_file_encoding='utf-8')
 

@@ -21,11 +21,6 @@ async def show_keyboard(message: types.Message):
     add_args = [message.from_user.id] if 'главное меню' in response_text.lower() else []
     await message.answer(text=response_text, reply_markup=keyboard(*add_args))
 
-@app_router.message(F.text.contains('Общая информация'))
-async def show_profile_info(message: types.Message):
-    await message.answer(f'Ты {message.from_user.first_name} {message.from_user.last_name}!')
-    await message.answer(f'А еще твой id = {message.from_user.id}')
-
 @app_router.message(F.text.contains('Отмена'))
 async def cancel_action(message: types.Message, state: FSMContext):
     current_state = await state.get_state()

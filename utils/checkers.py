@@ -1,6 +1,7 @@
 import os
 import re
 from typing import List
+import time
 
 import emoji
 
@@ -22,16 +23,18 @@ def sanitize_string(string: str) -> str:
         return emoji.replace_emoji(string, replace='')
     return string
 
-def parse_measure(string: str) -> List[str]:
-    measure = string.split(':')
-    if len(measure) == 2:
-        return measure
-    else: raise ValueError()
 
 def is_int(string: str) -> bool:
     try:
-        int(string)
+        _ = int(string)
     except ValueError:
         return False
     else:
         return True
+
+def is_valid_time(value) -> bool:
+    try:
+        _ = time.strptime(value, '%H:%M')
+    except ValueError:
+        return False
+    return True
