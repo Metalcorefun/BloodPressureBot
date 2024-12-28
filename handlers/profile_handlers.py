@@ -1,5 +1,6 @@
 from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
+from apscheduler.jobstores.base import JobLookupError
 from pydantic import ValidationError
 
 from create_bot import bot
@@ -15,6 +16,25 @@ profile_router = Router()
 
 async def notify_user(user_id):
     await bot.send_message(user_id, 'Пора бы померить давление...')
+
+async def add_new_notification(parameters, user_id):
+    user = await UserRepository.find(user_id)
+    description = f'Ежедневно в {parameters['hour']}:{parameters['minute']} МСК'
+    notification = NotificationDTO(
+        user_id=user.id,
+        parameters=parameters,
+        description=description,
+        apscheduler_job_id=f'notification_{parameters['hour']:02d}{parameters['minute']:02d}_{user.id}'
+    )
+    scheduler.add_job(
+        notify_user,
+        trigger=notification.parameters['trigger'],
+        hour=notification.parameters['hour'],
+        minute=notification.parameters['minute'],
+        id = notification.apscheduler_job_id,
+        kwargs = {'user_id': user_id}
+    )
+    await NotificationsRepository.create(notification)
 
 @profile_router.message(F.text.contains('Общая информация'))
 async def show_profile_info(message: types.Message):
@@ -43,18 +63,29 @@ async def handle_new_daily_notification(message: types.Message, state: FSMContex
     except (ValueError, ValidationError) as exception:
         await message.answer(text='Введенное время не соответствует формату, введите еще раз.')
 
-async def add_new_notification(parameters, user_id):
-    user = await UserRepository.find(user_id)
-    notification = NotificationDTO(
-        user_id=user.id,
-        parameters=parameters,
-        apscheduler_job_id=f'notification_{parameters['hour']:02d}{parameters['minute']:02d}_{user.id}'
+@profile_router.message(F.text.contains('Посмотреть текущие оповещения'))
+async def show_notifications(message: types.Message):
+    user = await UserRepository.find(message.from_user.id)
+    results = await NotificationsRepository.get_all_by_user_id(user.id)
+    response = (
+        f'{'\n'.join([str(result) for result in results])}'
+        if len(results) > 0
+        else 'На текущий момент у вас не настроено ни одного оповещения'
     )
-    scheduler.add_job(
-        notify_user,
-        trigger=notification.parameters['trigger'],
-        hour=notification.parameters['hour'],
-        minute=notification.parameters['minute'],
-        kwargs = {'user_id': user_id}
-    )
-    await NotificationsRepository.create(notification)
+    await message.answer(text=response)
+
+@profile_router.message(F.text.contains('Убрать оповещение'))
+async def initiate_notification_delete(message: types.Message, state: FSMContext):
+    await state.set_state(AppStates.delete_notification)
+    await message.answer(text='Введите ID оповещения, которое вы хотите удалить.\n'
+                              'Его можно посмотреть в списке оповещений', reply_markup=cancel_kb())
+
+@profile_router.message(AppStates.delete_notification, F.text)
+async def handle_notification_delete(message: types.Message, state: FSMContext):
+    try:
+        await NotificationsRepository.delete(message.text)
+        scheduler.remove_job(message.text)
+        await state.clear()
+        await message.answer(text='Оповещение удалено')
+    except JobLookupError:
+        await message.answer(text='ID оповещения не валиден, попробуйте еще раз.')

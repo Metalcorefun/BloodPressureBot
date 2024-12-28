@@ -21,8 +21,15 @@ class MeasureRepository:
         raise NotImplementedError()
 
     @staticmethod
-    async def get_by_user_id(user_id: int):
-        query = select(MeasureEntity).where(MeasureEntity.user_id == user_id).order_by(desc(MeasureEntity.measure_dt))
+    async def get_all_by_user_id(user_id: int):
+        query = (
+            select(MeasureEntity)
+            .where(MeasureEntity.user_id == user_id)
+            .order_by(desc(MeasureEntity.measure_dt))
+        )
         async with get_db_session() as session:
             results = await session.execute(query)
-            return [MeasureDTO.model_validate(measure, from_attributes=True) for measure in results.scalars().all()]
+            return [
+                MeasureDTO.model_validate(measure, from_attributes=True)
+                for measure in results.scalars().all()
+            ]

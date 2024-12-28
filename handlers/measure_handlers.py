@@ -34,10 +34,9 @@ async def handle_new_measure(message: types.Message, state: FSMContext):
 
 @measure_router.message(F.text.contains('Выгрузить историю'))
 async def download_measures(message: types.Message):
-    user_id = message.from_user.id
-    user = await UserRepository.find(user_id)
+    user = await UserRepository.find(message.from_user.id)
 
-    results = await MeasureRepository.get_by_user_id(user.id)
+    results = await MeasureRepository.get_all_by_user_id(user.id)
     results_as_dicts = [item.model_dump(exclude={'id', 'user_id'}) for item in results]
     csv_bytes = to_csv_bytes(results_as_dicts)
 
