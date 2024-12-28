@@ -87,5 +87,5 @@ async def handle_notification_delete(message: types.Message, state: FSMContext):
         scheduler.remove_job(message.text)
         await state.clear()
         await message.answer(text='Оповещение удалено')
-    except JobLookupError:
+    except (JobLookupError, ValueError):
         await message.answer(text='ID оповещения не валиден, попробуйте еще раз.')

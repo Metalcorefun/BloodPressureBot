@@ -43,5 +43,6 @@ class NotificationsRepository:
         )
         async with get_db_session() as session:
             result = await session.execute(query)
-            print(result.fetchall())
+            if len(result.fetchall()) != 1:
+                raise ValueError('Nothing was deleted by provided id')
             await session.commit()
