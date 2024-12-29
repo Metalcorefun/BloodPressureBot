@@ -1,9 +1,11 @@
 aiogram==3.15.0
-SQLAlchemy~=2.0.36
-pydantic-settings~=2.7.0
-python-dotenv==1.0.1
-emoji==2.14.0
-setuptools==75.6.0
+aiosqlite==0.20.0
 apscheduler==3.11.0
+emoji==2.14.0
+greenlet==3.1.1
+SQLAlchemy~=2.0.36
 pydantic~=2.9.2
 pydantic_core~=2.23.4
+pydantic-settings~=2.7.0
+python-dotenv==1.0.1
+setuptools==75.6.0
