@@ -7,13 +7,13 @@ from aiogram.types import ReplyKeyboardRemove
 from keyboards.reply_kbs import main_kb, get_keyboard_binds, get_keyboard_by_message
 from utils.checkers import sanitize_string
 
-app_router = Router()
+router = Router()
 
-@app_router.message(Command('menu'))
+@router.message(Command('menu'))
 async def show_menu(message: types.Message):
     await message.answer(text='Главное меню', reply_markup=main_kb(message.from_user.id))
 
-@app_router.message(lambda msg: any(substr in msg.text for substr in get_keyboard_binds().keys()))
+@router.message(lambda msg: any(substr in msg.text for substr in get_keyboard_binds().keys()))
 async def show_keyboard(message: types.Message):
     response_text = sanitize_string(message.text).strip()
     keyboard = get_keyboard_by_message(response_text)
@@ -21,7 +21,7 @@ async def show_keyboard(message: types.Message):
     add_args = [message.from_user.id] if 'главное меню' in response_text.lower() else []
     await message.answer(text=response_text, reply_markup=keyboard(*add_args))
 
-@app_router.message(F.text.contains('Отмена'))
+@router.message(F.text.contains('Отмена'))
 async def cancel_action(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
     if current_state is None:
@@ -31,6 +31,6 @@ async def cancel_action(message: types.Message, state: FSMContext):
     await message.answer("Ввод информации отменён", reply_markup=ReplyKeyboardRemove())
 
 
-@app_router.message(Command("dice"))
+@router.message(Command("dice"))
 async def cmd_dice(message: types.Message):
     await message.answer_dice(emoji=DiceEmoji.BOWLING)

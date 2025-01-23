@@ -2,6 +2,7 @@ from models.user import UserEntity, UserDTO
 from data_access_layer.database import get_db_session
 from sqlalchemy import select
 
+# TODO:
 class UserRepository:
 
     @staticmethod

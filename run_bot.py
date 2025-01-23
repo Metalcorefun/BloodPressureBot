@@ -2,7 +2,7 @@ import asyncio
 from datetime import datetime
 
 from aiogram import Bot
-from aiogram.types import BotCommand, BotCommandScopeDefault
+from aiogram.types import BotCommand, BotCommandScopeDefault\
 
 from create_bot import bot, dp
 from create_scheduler import scheduler
@@ -21,10 +21,10 @@ async def initialize_on_startup():
 async def main():
     scheduler.start()
 
-    dp.include_router(app_handlers.app_router)
-    dp.include_router(user_handlers.user_router)
-    dp.include_router(measure_handlers.measure_router)
-    dp.include_router(profile_handlers.profile_router)
+    dp.include_router(app_handlers.router)
+    dp.include_router(user_handlers.router)
+    dp.include_router(measure_handlers.router)
+    dp.include_router(profile_handlers.router)
     dp.startup.register(initialize_on_startup)
     #dp.shutdown.register()
 

@@ -12,7 +12,7 @@ from models.notifications import NotificationDTO
 from utils.app_states import AppStates
 from utils.transformers import parse_time_hhmm
 
-profile_router = Router()
+router = Router()
 
 async def notify_user(user_id):
     await bot.send_message(user_id, 'Пора бы померить давление...')
@@ -36,18 +36,18 @@ async def add_new_notification(parameters, user_id):
     )
     await NotificationsRepository.create(notification)
 
-@profile_router.message(F.text.contains('Общая информация'))
+@router.message(F.text.contains('Общая информация'))
 async def show_profile_info(message: types.Message):
     await message.answer(f'Ты {message.from_user.first_name} {message.from_user.last_name}!')
     await message.answer(f'А еще твой id = {message.from_user.id}')
 
-@profile_router.message(F.text.contains('Добавить оповещение'))
+@router.message(F.text.contains('Добавить оповещение'))
 async def new_notification(message: types.Message, state: FSMContext):
     await state.update_data(trigger='cron')
     await state.set_state(AppStates.choice_notification_time)
     await message.answer(text='Укажите время ежедневных уведомлений в формате ЧЧ:ММ', reply_markup=cancel_kb())
 
-@profile_router.message(AppStates.choice_notification_time, F.text)
+@router.message(AppStates.choice_notification_time, F.text)
 async def handle_new_daily_notification(message: types.Message, state: FSMContext):
     try:
         time_ = parse_time_hhmm(message.text)
@@ -63,7 +63,7 @@ async def handle_new_daily_notification(message: types.Message, state: FSMContex
     except (ValueError, ValidationError) as exception:
         await message.answer(text='Введенное время не соответствует формату, введите еще раз.')
 
-@profile_router.message(F.text.contains('Посмотреть текущие оповещения'))
+@router.message(F.text.contains('Посмотреть текущие оповещения'))
 async def show_notifications(message: types.Message):
     user = await UserRepository.find(message.from_user.id)
     results = await NotificationsRepository.get_all_by_user_id(user.id)
@@ -74,13 +74,13 @@ async def show_notifications(message: types.Message):
     )
     await message.answer(text=response)
 
-@profile_router.message(F.text.contains('Убрать оповещение'))
+@router.message(F.text.contains('Убрать оповещение'))
 async def initiate_notification_delete(message: types.Message, state: FSMContext):
     await state.set_state(AppStates.delete_notification)
     await message.answer(text='Введите ID оповещения, которое вы хотите удалить.\n'
                               'Его можно посмотреть в списке оповещений', reply_markup=cancel_kb())
 
-@profile_router.message(AppStates.delete_notification, F.text)
+@router.message(AppStates.delete_notification, F.text)
 async def handle_notification_delete(message: types.Message, state: FSMContext):
     try:
         await NotificationsRepository.delete(message.text)

@@ -10,19 +10,19 @@ from models.measure import MeasureDTO
 from utils.app_states import AppStates
 from utils.transformers import parse_measure, to_csv_bytes
 
-measure_router = Router()
+router = Router()
 
 async def add_new_measure(measure, user_id):
     user = await UserRepository.find(user_id)
     measure = MeasureDTO(user_id=user.id, pressure_sys=measure[0], pressure_dia=measure[1])
     await MeasureRepository.create(measure)
 
-@measure_router.message(F.text.contains('Добавить измерение'))
+@router.message(F.text.contains('Добавить измерение'))
 async def new_measure(message: types.Message, state: FSMContext):
     await state.set_state(AppStates.adds_new_measure)
     await message.answer(text='Введите данные в формате {SYS}:{DIA}', reply_markup=cancel_kb())
 
-@measure_router.message(AppStates.adds_new_measure, F.text)
+@router.message(AppStates.adds_new_measure, F.text)
 async def handle_new_measure(message: types.Message, state: FSMContext):
     try:
         measure = parse_measure(message.text)
@@ -32,7 +32,7 @@ async def handle_new_measure(message: types.Message, state: FSMContext):
     except (ValueError, ValidationError) as error:
         await message.answer(text='Упс, кажется, что-то пошло не так. Попробуйте ещё.')
 
-@measure_router.message(F.text.contains('Выгрузить историю'))
+@router.message(F.text.contains('Выгрузить историю'))
 async def download_measures(message: types.Message):
     user = await UserRepository.find(message.from_user.id)
 

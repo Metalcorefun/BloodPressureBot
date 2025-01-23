@@ -6,13 +6,13 @@ from models.user import UserDTO
 from keyboards.reply_kbs import main_kb
 from utils.config_reader import config
 
-user_router = Router()
+router = Router()
 
 async def register_user(user_id):
     user = UserDTO(telegram_id=user_id)
     await UserRepository.create(user)
 
-@user_router.message(Command("start"))
+@router.message(Command("start"))
 async def cmd_start(message: types.Message):
     if message.from_user.id != config.admin_id:
         await message.answer("Бот на данный момент доступен только для админа.")
