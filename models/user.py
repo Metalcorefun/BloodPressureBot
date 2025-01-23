@@ -1,6 +1,6 @@
 from models.base import Base
 from pydantic import BaseModel
-from sqlalchemy import Column, Integer
+from sqlalchemy.orm import mapped_column, Mapped
 
 class UserDTO(BaseModel):
     id: int | None = None
@@ -9,5 +9,5 @@ class UserDTO(BaseModel):
 class UserEntity(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True)
-    telegram_id = Column(Integer)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    telegram_id: Mapped[int] = mapped_column()
