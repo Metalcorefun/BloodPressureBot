@@ -3,14 +3,14 @@ from aiogram.fsm.context import FSMContext
 from apscheduler.jobstores.base import JobLookupError
 from pydantic import ValidationError
 
-from create_bot import bot
-from create_scheduler import scheduler
-from data_access_layer.repositories.notifications_repository import NotificationsRepository
-from data_access_layer.repositories.user_repository import UserRepository
-from keyboards.reply_kbs import cancel_kb
-from models.notifications import NotificationDTO
-from utils.app_states import AppStates
-from utils.transformers import parse_time_hhmm
+from src.create_bot import bot
+from src.create_scheduler import scheduler
+from src.data_access_layer.repositories.notifications_repository import NotificationsRepository
+from src.data_access_layer.repositories.user_repository import UserRepository
+from src.keyboards.reply_kbs import cancel_kb
+from src.models.notifications import NotificationDTO
+from src.utils.app_states import AppStates
+from src.utils.transformers import parse_time_hhmm
 
 router = Router()
 
@@ -47,6 +47,7 @@ async def new_notification(message: types.Message, state: FSMContext):
     await state.set_state(AppStates.choice_notification_time)
     await message.answer(text='Укажите время ежедневных уведомлений в формате ЧЧ:ММ', reply_markup=cancel_kb())
 
+#TODO: add timedelta notifications
 @router.message(AppStates.choice_notification_time, F.text)
 async def handle_new_daily_notification(message: types.Message, state: FSMContext):
     try:

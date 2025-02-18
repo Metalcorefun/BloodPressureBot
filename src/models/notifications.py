@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
-from models.base import Base
+from src.models.base import Base
 
 class NotificationDTO(BaseModel):
     id: int | None = None

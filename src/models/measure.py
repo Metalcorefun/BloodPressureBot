@@ -4,7 +4,7 @@ from pydantic import BaseModel, field_validator, Field, ValidationError
 from sqlalchemy import ForeignKey, func
 from sqlalchemy.orm import mapped_column, Mapped
 
-from models.base import Base
+from src.models.base import Base
 
 class MeasureDTO(BaseModel):
     id: int | None = None

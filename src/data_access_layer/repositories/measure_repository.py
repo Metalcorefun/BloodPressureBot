@@ -1,5 +1,5 @@
-from models.measure import MeasureDTO, MeasureEntity
-from data_access_layer.database import get_db_session
+from src.models.measure import MeasureDTO, MeasureEntity
+from src.data_access_layer.database import get_db_session
 from sqlalchemy import select, desc
 
 

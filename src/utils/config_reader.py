@@ -1,8 +1,7 @@
-import os
 from pydantic import SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import find_dotenv
-from utils.checkers import is_valid_filename
+from src.utils.checkers import is_valid_filename
 
 class Settings(BaseSettings):
     bot_token: SecretStr

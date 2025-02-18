@@ -2,7 +2,7 @@ from apscheduler.executors.asyncio import AsyncIOExecutor
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
-from utils.config_reader import config
+from src.utils.config_reader import config
 
 jobstores = {
     'default': SQLAlchemyJobStore(url=f'sqlite:///{config.job_database_file}')

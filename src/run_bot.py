@@ -1,13 +1,13 @@
 import asyncio
-from datetime import datetime
 
 from aiogram import Bot
 from aiogram.types import BotCommand, BotCommandScopeDefault\
 
-from create_bot import bot, dp
-from create_scheduler import scheduler
-from data_access_layer.database import initialize_db
-from handlers import app_handlers, user_handlers, measure_handlers, profile_handlers
+from src.create_bot import bot, dp
+from src.create_scheduler import scheduler
+from src.data_access_layer.database import initialize_db
+from src.handlers import app_handlers, measure_handlers, profile_handlers, user_handlers
+
 
 async def set_commands(bot: Bot):
     commands = [BotCommand(command='start', description='Старт'),

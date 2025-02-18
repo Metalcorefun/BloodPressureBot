@@ -1,7 +1,7 @@
 from sqlalchemy import select, delete
 
-from models.notifications import NotificationEntity, NotificationDTO
-from data_access_layer.database import get_db_session
+from src.models.notifications import NotificationEntity, NotificationDTO
+from src.data_access_layer.database import get_db_session
 
 class NotificationsRepository:
 

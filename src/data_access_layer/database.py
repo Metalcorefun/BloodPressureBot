@@ -3,16 +3,14 @@ from typing import AsyncIterator
 from sqlalchemy import inspect
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker, AsyncConnection
 
-from models.base import Base
-from models.user import UserEntity
-from models.measure import MeasureEntity
+from src.models.base import Base
 
-from utils.config_reader import config
+from src.utils.config_reader import config
 
 engine = None
 session_maker = None
 
-# TODO: maybe shoud use Alembic for schema mighrations
+#TODO: maybe shoud use Alembic for schema mighrations
 async def initialize_db():
     global engine
     engine = create_async_engine(f'sqlite+aiosqlite:///{config.database_file}')

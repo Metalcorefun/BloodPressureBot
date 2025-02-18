@@ -1,4 +1,4 @@
-from models.base import Base
+from src.models.base import Base
 from pydantic import BaseModel
 from sqlalchemy.orm import mapped_column, Mapped
 

@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from utils.config_reader import config
+from src.utils.config_reader import config
 
-# FUTURE: Rewrite all navigation to callbacks
+#TODO: Rewrite all navigation to callbacks
 
 # В каждом кейборде завести параметр ancestor и занести в коллбэк
 # from aiogram.filters.callback_data import CallbackData
