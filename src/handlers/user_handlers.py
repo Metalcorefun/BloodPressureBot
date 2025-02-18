@@ -4,7 +4,7 @@ from aiogram.filters.command import Command
 from src.data_access_layer.repositories.user_repository import UserRepository
 from src.models.user import UserDTO
 from src.keyboards.reply_kbs import main_kb
-from src.utils.config_reader import config
+from src.utils.config_reader import app_config
 
 router = Router()
 
@@ -14,7 +14,7 @@ async def register_user(user_id):
 
 @router.message(Command("start"))
 async def cmd_start(message: types.Message):
-    if message.from_user.id != config.admin_id:
+    if message.from_user.id != app_config.admin_id:
         await message.answer("Бот на данный момент доступен только для админа.")
         await message.answer("Другим анонимусам придется подождать🤷‍♂️")
     else:

@@ -1,5 +1,5 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from src.utils.config_reader import config
+from src.utils.config_reader import app_config
 
 #TODO: Rewrite all navigation to callbacks
 
@@ -17,7 +17,7 @@ def main_kb(user_telegram_id: int):
         [KeyboardButton(text="📈 Измерения и статистика")],
         [KeyboardButton(text="👤 Мой профиль")]
     ]
-    if user_telegram_id == config.admin_id:
+    if user_telegram_id == app_config.admin_id:
         kb_list.append([KeyboardButton(text="⚙️ Админка")])
     return ReplyKeyboardMarkup(
         keyboard=kb_list,

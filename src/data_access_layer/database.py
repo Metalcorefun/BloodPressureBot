@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 
 from src.models.base import Base
 
-from src.utils.config_reader import config
+from src.utils.config_reader import app_config
 
 engine = None
 session_maker = None
@@ -13,7 +13,7 @@ session_maker = None
 #TODO: maybe shoud use Alembic for schema mighrations
 async def initialize_db():
     global engine
-    engine = create_async_engine(f'sqlite+aiosqlite:///{config.database_file}')
+    engine = create_async_engine(app_config.database_url_async)
 
     global session_maker
     session_maker = async_sessionmaker(engine, class_=AsyncSession,expire_on_commit=False)
@@ -37,6 +37,7 @@ def inspect_tables(conn: AsyncIterator[AsyncConnection]):
     inspector = inspect(conn)
     return inspector.get_table_names()
 
+#TODO: refactor for alembic execution
 async def all_tables_exists(session: AsyncSession) -> bool:
     tbls = Base.metadata.tables.values()
     schema_tables = [table.name for table in Base.metadata.tables.values()]
