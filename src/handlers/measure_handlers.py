@@ -32,6 +32,7 @@ async def handle_new_measure(message: types.Message, state: FSMContext):
     except (ValueError, ValidationError) as error:
         await message.answer(text='Упс, кажется, что-то пошло не так. Попробуйте ещё.')
 
+# TODO: make plot by plotly as user option
 @router.message(F.text.contains('Выгрузить историю'))
 async def download_measures(message: types.Message):
     user = await UserRepository.find(message.from_user.id)
