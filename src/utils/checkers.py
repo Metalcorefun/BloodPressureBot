@@ -18,6 +18,9 @@ def contains_invalid_chars(string, pattern) -> bool:
         return True
     return False
 
+def is_file_exists(filename: str) -> bool:
+    return os.path.exists(filename)
+
 def sanitize_string(string: str) -> str:
     if emoji.emoji_count(string) > 0:
         return emoji.replace_emoji(string, replace='')
